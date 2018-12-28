@@ -1,0 +1,10 @@
+{
+  "socketURL": "/",
+  "socketMessageEvent": "RTCMultiConnection-Message",
+  "socketCustomEvent": "RTCMultiConnection-Custom-Message",
+  "port": "9002",
+  "enableLogs": "true",
+  "autoRebootServerOnFailure": "true",
+  "version": "0.1 beta",
+  "serverIp":"127.0.0.1"
+}

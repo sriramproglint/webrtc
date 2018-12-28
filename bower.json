@@ -1,0 +1,40 @@
+{
+    "name": "RTCconnection",
+    "description": "RTCconnection is a WebRTC",
+    "version": "3.4.4",
+    "authors": [
+        {
+            "name": "admin",
+            "email": "shawn@synct.md",
+            "homepage": "http://www.synct.com/"
+        }
+    ],
+    "main": "RTCMultiConnection.js",
+    "keywords": [
+        "webrtc",
+        "rtcmulticonnection",
+        "webrtc-library",
+        "library",
+        "javascript",
+        "chrome",
+        "firefox",
+        "opera",
+        "ie",
+        "internet-explorer",
+        "android",
+        "rtcweb",
+        "rtcmulticonnection.js",
+        "multirtc",
+        "webrtc-experiment",
+        "javascript-library",
+        "muaz",
+        "muaz-khan"
+    ],
+    "homepage": "http://www.synct.md",
+    "ignore": [
+        "**/.*",
+        "node_modules",
+        "test",
+        "tests"
+    ]
+}

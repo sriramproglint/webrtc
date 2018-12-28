@@ -1,0 +1,231 @@
+.start-screen {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    left: 0px;
+    right: 0px;
+    background-image: url("../images/bg.jpg");
+    background-size: cover;
+    background-position: center;
+    color: #FFF;
+}
+
+.video-chat {
+    background: #FFF;
+    vertical-align: bottom;
+}
+
+.friend-face {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    background-color: rgb(73, 68, 68);
+    text-align: center;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.video-icon {
+    margin-top: 21%;
+    font-size: 40px;
+    color: #544f4f;
+    border: 3px solid #544f4f;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.our-face {
+    width: 160px;
+    height: 180px;
+    background-color: #313131;
+    display: block;
+    float: right;
+    margin: 0 30px 30px 0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.bottom-panel {
+    z-index: 999;
+}
+
+.controls {
+    padding: 0px;
+    margin: 0px auto 15px;
+    display: table;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    box-shadow: 1px 1px 1px #000;
+}
+
+.controls li {
+    list-style: none;
+    display: inline-block;
+    padding: 10px;
+}
+
+.controls li .btn-link {
+    color: #FFF;
+}
+
+.video-chat td {
+    position: relative;
+}
+
+.tri-right.border.left-top:before {
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: -40px;
+    right: auto;
+    top: -8px;
+    bottom: auto;
+    border: 32px solid;
+    border-color: #666 transparent transparent transparent;
+}
+
+.tri-right.left-top:after {
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: -20px;
+    right: auto;
+    top: 0px;
+    bottom: auto;
+    border: 22px solid;
+    border-color: #7959b7 transparent transparent transparent;
+    z-index: -1;
+}
+
+.talk-bubble {
+    margin: 23px 40px;
+    display: inline-block;
+    position: relative;
+    width: 80%;
+    height: auto;
+    background-color: #7959b7;
+    color: #FFF;
+    padding: 15px;
+}
+
+.our-bubble.tri-right.left-top:after {
+    right: -19px;
+    left: auto;
+    border-color: #b5b5b5 transparent transparent transparent;
+}
+
+.our-bubble.talk-bubble {
+    background-color: #b5b5b5;
+}
+
+.profile-details {
+    background-color: #666;
+    width: 100%;
+    position: absolute;
+    top: 0px;
+    padding: 5px;
+    z-index: 999;
+}
+
+.close-chat {
+    display: none;
+}
+
+.soap-chat {
+    display: none;
+}
+
+.chat-bubble {
+    max-height: 100%;
+}
+
+.soap-bubble {
+    max-height: 100%;
+}
+
+.chat-bubble {
+    max-height: 540px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-top: 30px;
+}
+
+.soap-bubble {
+    max-height: 540px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-top: 30px;
+}
+.talktext {
+    position: relative;
+}
+
+label.username {
+    position: absolute;
+    top: -50px;
+    background-color: #7959b7;
+    font-size: 12px;
+    padding: 1px 10px 3px;
+    border-radius: 50px;
+    left: -15px;
+}
+
+.our-bubble label.username {
+    background-color: #b5b5b5;
+    right: -15px;
+    left: auto;
+}
+
+.username span.time {
+    position: absolute;
+    top: 2px;
+    left: 108%;
+    color: #d4d4d4;
+}
+
+.our-bubble span.time {
+    right: 108%;
+    left: auto;    
+}
+
+.friend-face video, .our-face video{
+    width: 100%;
+}
+@media(max-width:768px) {}
+
+@media(max-width:767px) {
+    .our-face {
+        width: 82px;
+        height: 82px;
+        border-radius: 62px;
+    }
+    .video-icon {
+        margin-top: 55%;
+    }
+    .close-chat {
+        color: #FFF;
+        font-size: 22px;
+        margin-top: 5px;
+        display: inline-block;
+    }
+    .chat-bubble {
+        max-height: 450px;
+    }
+}
+
+@media(max-width:720px) {
+    .chat-bubble {
+        max-height: 320px;
+    }
+}
+
+@media(max-width:720px) {
+    .soap-bubble {
+        max-height: 320px;
+    }
+}

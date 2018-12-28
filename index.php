@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>|| Video ||</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dev.css">
+    <link rel="stylesheet" href="css/modal-preview.css">
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/ajax.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/redmond/jquery-ui.css" />
+    <script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script src="js/radic.js"></script>
+</head>
+
+<body>
+
+    <!-- chat box -->
+    <aside id="sidebar_secondary" class="tabbed_sidebar ng-scope chat_sidebar">
+        <div class="popup-head">
+            <div class="popup-head-left pull-left">
+                <a>
+                    <h1>Chat Box</h1>
+                </a>
+            </div>
+            <div class="pull-right">
+                <a class="chat-header-button pull-right hand" onclick="closeChat()">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </a>
+            </div>
+            <div class="chat-collapse-div pull-right">
+                <a class="chat-header-button pull-right hand" data-toggle="collapse" data-target="#chat-collapse">
+                    <i class="fa" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+        <div id="chat-collapse" class="collapse show">
+            <div id="chat" class="chat_box_wrapper chat_box_small chat_box_active">
+                <div class="chat_box chat_box_colors_a chat-output touchscroll" id="file-container">
+                </div>
+            </div>
+            <div class="chat_submit_box">
+                <div class="input-group">
+                    <input type="text" class="form-control border-left" id="input-text-chat" aria-label="Text Message" placeholder="Enter text message">
+                    <div class="input-group-append">
+                        <button class="input-group-text" id="share-file">
+                                <i class="fa fa-paperclip"></i>
+                            </button>
+                        <button class="input-group-text border-right" onclick="sendMessage()">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- start screen -->
+    <table class="start-screen create-room">
+        <tr>
+            <td class="conversation-login text-center">
+                <div class="col-sm-3" style="margin: auto;">
+                    <input name="room-id" id="room-id" class="form-control mb-2" placeholder="Enter Room Id">
+                    <input name="room-name" id="username" class="form-control mb-2" placeholder="Enter Room Name">
+                    <button class="btn btn-primary w-100 mt-2" id="open-room">
+                        <i class="far fa-dot-circle"></i> Start Conversation</button>
+                </div>
+                <p class="mt-2 pl-3 pr-3">Click the Start Conversation button for video chat.</p>
+                <a href="" id="room-urls"></a>
+            </td>
+        </tr>
+    </table>
+   
+    <!-- video & soap -->
+    <table class="start-screen video-chat">
+        <tr>
+
+            <!-- video -->
+            <td class="align-bottom video-side">
+                <!-- video append -->
+                <div class="video-panel" id="panel"></div>
+
+                <!-- bottom icon and own video -->
+                <div class="bottom-panel">
+
+                    <!-- own video -->
+                    <div class="our-face" id="our-face"></div>
+                    <div class="clearfix"></div>
+
+                    <!-- control icons -->
+                    <div class="video-control">
+                        <ul class="controls">
+                            <li data-toggle="tooltip" title="Mute/Unmute microphone">
+                                <button class="btn btn-link mute-audio" id="microphone">
+                                            <i class="fas fa-microphone" id="mute_audio_li"></i>
+                                        </button>
+                            </li>
+                            <li data-toggle="tooltip" title="Turn camera off/on">
+                                <button class="btn btn-link mute-video" id="videocamera">
+                                        <i class="fas fa-video" id="mute_video_li"></i>
+                                    </button>
+                            </li>
+                            <li id="start-rec-btn" data-toggle="tooltip" title="Record">
+                                <button class="btn btn-link" id="start-recording" disabled>
+                                        <i class="fas fa-dot-circle"></i>
+                                    </button>
+                            </li>
+                            <li id="stop-rec-btn" data-toggle="tooltip" title="Stop Record">
+                                <button class="btn btn-link" id="stop-recording" disabled>
+                                        <i class="fas fa-dot-circle stop-recording"></i>
+                                    </button>
+                            </li>
+                            <li data-toggle="tooltip" title="Chat">
+                                <button class="btn btn-link" data-toggle="tooltip" title="Chat" onclick="showChat()">
+                                        <!-- <span class="badge chat-count">5</span> -->
+                                        <i class="fas fa-comments"></i>
+                                    </button>
+                            </li>
+                            <li id="soap-hide" data-toggle="tooltip" title="Documentation">
+                                <button class="btn btn-link" data-toggle="tooltip" title="Documentation" onclick="showSoap()">
+                                        <i class="fas fa-sticky-note"></i>
+                                    </button>
+                            </li>
+                            <li data-toggle="tooltip" title="End Call">
+                                <button class="btn btn-link" id="btn-leave-room">
+                                        <i class="fas fa-phone fa-rotate-225" aria-hidden="true"></i>
+                                    </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </td>
+
+            <!-- soap panel -->
+            <td class="chat-par-box">
+                <div class="soap-box">
+                    <div class="profile-details">
+                        <div class="media">
+                            <div class="media-body">
+                                <p>
+                                    <b>SOAP</b>
+                                </p>
+                            </div>
+                            <button class="btn btn-link close-soap" onclick="showSoap()">
+                                <i class="fa fa-window-close"></i>
+                            </button>
+                        </div>
+
+                    </div>
+                    <div class="encounter-tabs">
+                        <div class="hamburger-soap">
+                            <span>
+                                    <i class="fas fa-bars" onclick="showSoapTitle()"></i>
+                                </span>
+                            <span>
+                                    <i class="fas fa-times" onclick="hideSoapTitle()"></i>
+                                </span>
+                        </div>
+                        <ul class="nav nav-tabs accordingBlock" role="tablist">
+                            <li role="presentation" class="active soap">
+                                <a href="#soap" aria-controls="soap" role="tab" data-toggle="tab" id="soap-tab" onclick="tabColour('soap');" class="active show" aria-selected="true">
+                                    SOAP
+                                </a>
+                            </li>
+                            <li role="presentation" class="allergies">
+                                <a href="#allergies" aria-controls="allergies" role="tab" data-toggle="tab" id="allergies-tab" onclick="tabColour('allergies');" class="" aria-selected="false">
+                                    Allergies
+                                </a>
+                            </li>
+                            <li role="presentation" class="medication">
+                                <a href="#medication" aria-controls="profile" role="tab" data-toggle="tab" id="medication-tab" onclick="tabColour('medication');" class="" aria-selected="false">
+                                    Medication
+                                </a>
+                            </li>
+                            <li role="presentation" class="diagnosis">
+                                <a href="#diagnosis" aria-controls="diagnosis" role="tab" data-toggle="tab" id="diagnosis-tab" onclick="tabColour('diagnosis');" class="" aria-selected="false">
+                                    Diagnosis Codes
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane form-horizontal" id="diagnosis">
+                                <div class="tabpanel-title">
+                                    diagnosis codes
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h6>Diagnosis and Visit Code Details</h6>
+                                        <div id="showdiagnosis">
+                                            <div id="showdiagnosisdet"></div>
+                                        </div>
+                                        <button class="btn btn-primary btn-xs" onclick="Diagnosis();">
+                                            <span class="fa fa-plus"></span> Add Diagnosis</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group mar-T-10" id="Diagnosis">
+                                            <label for="exampleInputEmail1" class="col-sm-6 control-label">Add Diagnosis</label>
+                                            <div class="col-sm-12">
+                                                <input type="text" id="tags" name="tags" class="form-control" placeholder="Add Diagnosis..." onkeyup="adddiagnosis(this.value)">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table table-responsive table-bordered" id="adddiagnosis">
+                                    <table class="table table-striped" id="DiagnosisRecordTab">
+                                        <thead>
+                                            <tr>
+                                                <th>Type</th>
+                                                <th>Code</th>
+                                                <th>Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="DiagnosisRecord"></tbody>
+                                    </table>
+                                </div>
+                                <div id="datediagnosis">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group mar-T-10">
+                                                <label for="inputEmail3" class="control-label">Start Date</label>
+                                                <div class='input-group date' id='start_datediagnosis'>
+                                                    <input type='text' class="form-control" id='start_diagnosisDate' />
+                                                    <span class="input-group-addon">
+                                                            <span class="fa fa-calendar"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group mar-T-10">
+                                                <label for="inputEmail3" class="col-sm-12 control-label">End Date</label>
+                                                <div class='input-group date' id='end_datediagnosis'>
+                                                    <input type='text' class="form-control" id='end_diagnosisDate' />
+                                                    <span class="input-group-addon">
+                                                            <span class="fa fa-calendar"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-12 control-label">Acuity</label>
+                                        <div class="col-sm-12">
+                                            <label class="radio-inline">
+                                                <input type="radio" id="diagnosisacute" name="diagnosisacute" value="Acute"> Acute
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" id="diagnosisacute" name="diagnosisacute" value="Acute"> Chronic
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" id="diagnosisacute" name="diagnosisacute"  value="Terminal"> Terminal
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-12 control-label">Diagnosis Comment</label>
+                                        <div class="col-sm-12">
+                                            <textarea class="form-control" id="diagnosiscomments" name="diagnosiscomments"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-12 control-label"></label>
+                                        <div class="col-sm-12">
+                                            <button class="btn btn-primary btn-xs" onclick="diagnosisFinish();">Finish</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane form-horizontal" id="medication">
+                                <div class="tabpanel-title">
+                                    medication
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h6>Medication Details</h6>
+                                        <div id="showmedication"></div>
+                                        <button class="btn btn-primary btn-xs" onclick="medication_btn();"><span class="fa fa-plus"></span> Add Medication</button>
+                                    </div>
+                                </div>
+                                <div id="select_medication">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group mar-T-10">
+                                                <label for="inputEmail3" class="col-sm-12 control-label">Add Medication</label>
+                                                <div class="col-sm-12">
+                                                    <input type="text" class="form-control" id="drugtags" name="drugtags" placeholder="Add Medication..." onkeyup="addmedication(this.value)">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="datemedication">
+                                    <div class="table table-responsive table-bordered" id="addmedication">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Type</th>
+                                                    <th>Code</th>
+                                                    <th>Description</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="MedicationRecord"></tbody>
+                                        </table>
+                                    </div>
+                                    <div class="container-fluid mar-T-10 inline-form">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Start Date</label>
+                                                    <div class='input-group date' id='start_datemedication'>
+                                                        <input type='text' class="form-control" id='start_medicationDate' />
+                                                        <span class="input-group-addon">
+                                                            <span class="fa fa-calendar"></span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">End Date</label>
+                                                    <div class='input-group date' id='end_datemedication'>
+                                                        <input type='text' class="form-control" id='end_medicationDate' />
+                                                        <span class="input-group-addon">
+                                                            <span class="fa fa-calendar"></span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Medication In take</label>
+                                                    <select name="medicationintake" class="form-control" id="medicationintake">
+                                                        <option value="Once a Day">Once a Day</option>
+                                                        <option value="Twice a Day">Twice a Day</option>
+                                                        <option value="Three times a Day">Three times a Day</option>
+                                                        <option value="Once a Week">Once a Week</option>
+                                                        <option value="Twice a Week">Twice a Week</option>
+                                                        <option value="When needed">When needed</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-12 control-label">Medication Comment</label>
+                                        <div class="col-sm-12">
+                                            <textarea id="medicationcomment" name="medicationcomment" class="form-control"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label"></label>
+                                        <div class="col-sm-7">
+                                            <button class="btn btn-primary btn-xs" onclick="medicationfinish()">Finish</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane form-horizontal" id="allergies">
+                                <div class="tabpanel-title">
+                                    allergies
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h6>Allergies Details</h6>
+                                        <div id="showallergy"></div>
+                                        <button class="btn btn-primary btn-xs" onclick="addallergy();"><span class="fa fa-plus"></span> Add Allergy</button>
+                                    </div>
+                                </div>
+                                <div id="hideallergy">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group mar-T-10">
+                                                <label for="inputEmail3" class="col-sm-12 control-label">Allergies category</label>
+                                                <div class="col-sm-12">
+                                                    <label class="radio-inline">
+                                                        <input type="radio" value="drug" name="allergies" id="allergies"> Drug
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" value="food" name="allergies" id="allergies"> Food
+                                                    </label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" value="environment" name="allergies" id="allergies"> Environment
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mar-T-10">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">Allergies</label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control" id="allergydetails" name="allergydetails" placeholder="Allergies...">
+                                        </div>
+                                    </div>
+                                    <div class="form-group mar-T-10">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">Severity</label>
+                                        <div class="col-sm-12">
+                                            <label class="radio-inline">
+                                                <input type="radio" value="verymild" name="severity" id="severity"> Very Mild
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" value="Mild" name="severity" id="severity"> Mild
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" value="Moderate" name="severity" id="severity"> Moderate
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" value="Severe" name="severity" id="severity"> Severe
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group mar-T-10">
+                                                <label for="inputEmail3" class="col-sm-12 control-label">Start Date</label>
+                                                <div class="col-sm-12">
+                                                    <div class="form-group">
+                                                        <div class='input-group date' id='start_dateallergies'>
+                                                            <input type='text' class="form-control" id='start_allergiesDate' />
+                                                            <span class="input-group-addon">
+                                                                <span class="fa fa-calendar"></span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group mar-T-10">
+                                                <label for="inputEmail3" class="col-sm-3 control-label">Reaction</label>
+                                                <div class="col-sm-12">
+                                                    <input type="text" class="form-control" id="allergyreaction" name="allergyreaction" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mar-T-10">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">OnSet</label>
+                                        <div class="col-sm-9">
+                                            <label class="radio-inline">
+                                                <input type="radio" value="Childhood" name="onset" id="onset"> Childhood
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" value="Adulthood" name="onset" id="onset"> Adulthood
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" value="Unknown" name="onset" id="onset"> Unknown
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-12 control-label">Allergies Comment</label>
+                                        <div class="col-sm-12">
+                                            <textarea class="form-control" name="allergycomments" id="allergycomments"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label"></label>
+                                        <div class="col-sm-7">
+                                            <button class="btn btn-primary btn-xs" onclick="allergyfinish()">Finish</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane active show" id="soap">
+                                <div class="tabpanel-title">
+                                    Soap
+                                </div>
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">Subjective</label>
+                                        <div class="col-sm-12">
+                                            <textarea class="form-control" name="subject" id="subject"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">Objective</label>
+                                        <div class="col-sm-12">
+                                            <textarea class="form-control" name="objective" id="objective"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">Assessment</label>
+                                        <div class="col-sm-12">
+                                            <textarea class="form-control" name="assessment" id="assessment"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">Plan</label>
+                                        <div class="col-sm-12">
+                                            <textarea class="form-control" name="plan" id="plan"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6" id="saveSoapButtonPanel">
+                                        <button class="btn btn-primary" onclick="soapnotesfinish()" id="saveSoapButton"><span class="fa fa-save"></span> Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div id="imageModal" class="modal">
+        <span class="closeModal" onclick="closeImageModal()">&times;</span>
+        <img class="modal-content" id="previewImage">
+        <div id="imageCaption"></div>
+    </div>
+    <div id="videoModal" class="modal">
+        <span class="closeModal" onclick="closeVideoModal()">&times;</span>
+        <video class="modal-content" id="previewVideo" controls>
+            Your browser does not support the video tag.
+        </video>
+        <div id="videoCaption"></div>
+    </div>
+</body>
+<script>
+    $('.chat-par-box').css('display', 'none');
+    $("#Diagnosis").hide();
+    $("#adddiagnosis").hide();
+    $("#Medication").hide();
+    $("#addmedication").hide();
+    $("#selectmedication").hide();
+    $("#selectdiagnosis").hide();
+    $("#datediagnosis").hide();
+    $("#datemedication").hide();
+    $("#showdiagnosis").hide();
+    $("#subject-box").hide();
+    $("#showmedication").hide();
+    $("#select_medication").hide();
+    $("#showallergy").hide();
+    $("#hideallergy").hide();
+    $('#sidebar_secondary').css({
+        display: 'none'
+    })
+
+    $(document).ready(function() {
+        $('.chat-par-box').addClass('hide-box');
+    });
+</script>
+
+<script src="js/bootstrap.min.js"></script>
+<!-- <script src="js/custom.js"></script> -->
+
+<script src="dist/RTCMultiConnection.js"></script>
+<!-- <script src="https://localhost:9002/socket.io/socket.io.js"></script> -->
+<script src="/socket.io/socket.io.js"></script>
+
+<!-- custom layout for HTML5 audio/video elements -->
+<script src="js_files/getMediaElement.js"></script>
+<script src="FileBufferReader.js"></script>
+<!-- media stream recorder -->
+<script src="media-stream-recorder/MediaStreamRecorder.js"></script>
+<script src="media-stream-recorder/ConcatenateBlobs.js"></script>
+<script src="media-stream-recorder/blob-util.js"></script>
+
+<script src="https://code.jquery.com/jquery-migrate-3.0.0.min.js" integrity="sha256-JklDYODbg0X+8sPiKkcFURb5z7RvlNMIaE3RA2z97vw=" crossorigin="anonymous"></script>
+<!-- ui js-->
+
+<script src="js_files/main.js"></script>
+<script src="js_files/chat.js"></script>
+<script src="js_files/soap.js"></script>
+<script src="js_files/modal.js"></script>
+</html>
