@@ -56,12 +56,18 @@ connection.getAllParticipantsMediaElement = function() {
     return mediaElementList;
 }
 connection.pushMediaElement = function(userId, mediaElement, streamId, name) {
-    mediaElementList.push({
-        userId: userId,
-        element: mediaElement,
-        streamId: streamId,
-        name: name
+   var index= mediaElementList.findIndex(function(o){
+        return o.userId == userId
     })
+    if(index == -1){
+        mediaElementList.push({
+            userId: userId,
+            element: mediaElement,
+            streamId: streamId,
+            name: name
+        })
+        connection.appendMediaElement()
+    }
 }
 
 connection.removeParticipantMediaElement = function(userId) {
@@ -74,8 +80,9 @@ connection.removeParticipantMediaElement = function(userId) {
 }
 
 connection.appendMediaElement = function() {
+    //alert(mediaElementList.length);
     if (mediaElementList.length == 0) {
-        var ownMediaElement = getMediaElement(ownElement.element, {
+        let ownMediaElement = getMediaElement(ownElement.element, {
             title: ownElement.userId,
             buttons: ['mute-audio', 'mute-video'],
             // buttons: ['record-audio','mute-audio', 'mute-video', 'full-screen', 'volume-slider', 'stop','take-snapshot'],
@@ -93,13 +100,13 @@ connection.appendMediaElement = function() {
 
         setTimeout(function() {
             ownMediaElement.media.play();
-        }, 1000);
+        }, 10);
 
         ownMediaElement.id = ownElement.streamId;
         document.getElementById('our-face').innerHTML = '';
         document.getElementById('our-face').style.display = 'none';
     } else if (mediaElementList.length == 1) {
-        var ownMediaElement = getMediaElement(ownElement.element, {
+        let ownMediaElement = getMediaElement(ownElement.element, {
             title: ownElement.userId,
             buttons: ['mute-audio', 'mute-video'],
             width: "100%",
@@ -118,11 +125,11 @@ connection.appendMediaElement = function() {
 
         setTimeout(function() {
             ownMediaElement.media.play();
-        }, 1000);
+        }, 10);
 
         ownMediaElement.id = ownElement.streamId;
 
-        var mainFaceElement = getMediaElement(mediaElementList[0].element, {
+        let mainFaceElement = getMediaElement(mediaElementList[0].element, {
             title: mediaElementList[0].userId,
             buttons: [],
             width: "100%",
@@ -135,16 +142,16 @@ connection.appendMediaElement = function() {
         mainFaceElement.media.setAttribute('playsinline', true)
         mainFaceElement.setAttribute('playsinline', true)
 
-        setTimeout(function() {
+         setTimeout(function() {
             mainFaceElement.media.play();
-        }, 1000);
+        }, 10);
 
         mainFaceElement.id = mediaElementList[0].streamId;
 
     } else if (mediaElementList.length == 2) {
         document.getElementById('our-face').innerHTML = '';
         document.getElementById('our-face').style.display = 'none';
-        var ownMediaElement = getMediaElement(ownElement.element, {
+        let ownMediaElement = getMediaElement(ownElement.element, {
             title: ownElement.userId,
             buttons: ['mute-audio', 'mute-video'],
             width: "100%",
@@ -162,11 +169,11 @@ connection.appendMediaElement = function() {
 
         setTimeout(function() {
             ownMediaElement.media.play();
-        }, 1000);
+        }, 10);
 
         ownMediaElement.id = ownElement.streamId;
 
-        var mainFaceElement = getMediaElement(mediaElementList[0].element, {
+        let mainFaceElement = getMediaElement(mediaElementList[0].element, {
             title: mediaElementList[0].userId,
             buttons: [],
             width: "100%",
@@ -181,12 +188,12 @@ connection.appendMediaElement = function() {
 
         setTimeout(function() {
             mainFaceElement.media.play();
-        }, 1000);
+        }, 10);
 
         mainFaceElement.id = mediaElementList[0].streamId;
 
 
-        var topFaceElement = getMediaElement(mediaElementList[1].element, {
+        let topFaceElement = getMediaElement(mediaElementList[1].element, {
             title: mediaElementList[1].userId,
             buttons: [],
             width: "100%",
@@ -201,13 +208,13 @@ connection.appendMediaElement = function() {
         topFaceElement.setAttribute('playsinline', true)
         setTimeout(function() {
             topFaceElement.media.play();
-        }, 1000);
+        }, 10);
 
         topFaceElement.id = mediaElementList[1].streamId;
     } else if (mediaElementList.length == 3) {
         document.getElementById('our-face').innerHTML = '';
         document.getElementById('our-face').style.display = 'none';
-        var ownMediaElement = getMediaElement(ownElement.element, {
+        let ownMediaElement = getMediaElement(ownElement.element, {
             title: ownElement.userId,
             buttons: ['mute-audio', 'mute-video'],
             width: "100%",
@@ -225,11 +232,11 @@ connection.appendMediaElement = function() {
 
         setTimeout(function() {
             ownMediaElement.media.play();
-        }, 1000);
+        }, 10);
 
         ownMediaElement.id = ownElement.streamId;
 
-        var mainFaceElement = getMediaElement(mediaElementList[0].element, {
+        let mainFaceElement = getMediaElement(mediaElementList[0].element, {
             title: mediaElementList[0].userId,
             buttons: [],
             width: "100%",
@@ -244,7 +251,7 @@ connection.appendMediaElement = function() {
 
         setTimeout(function() {
             mainFaceElement.media.play();
-        }, 1000);
+        }, 10);
 
         mainFaceElement.id = mediaElementList[0].streamId;
 
@@ -264,11 +271,11 @@ connection.appendMediaElement = function() {
 
         setTimeout(function() {
             middleFaceElement.media.play();
-        }, 1000);
+        }, 10);
 
         middleFaceElement.id = mediaElementList[1].streamId;
 
-        var topFaceElement = getMediaElement(mediaElementList[2].element, {
+        let topFaceElement = getMediaElement(mediaElementList[2].element, {
             title: mediaElementList[2].userId,
             buttons: [],
             width: "100%",
@@ -284,7 +291,7 @@ connection.appendMediaElement = function() {
 
         setTimeout(function() {
             topFaceElement.media.play();
-        }, 1000);
+        }, 10);
 
         topFaceElement.id = mediaElementList[2].streamId;
     }
@@ -371,7 +378,7 @@ connection.onstream = function(event, isMe) {
         connection.appendMediaElement()
     } else {
         connection.pushMediaElement(event.userid, event.mediaElement, event.streamid, event.name)
-        connection.appendMediaElement()
+     //   connection.appendMediaElement()
     }
     var streamId = event.streamid
 };
@@ -881,3 +888,5 @@ if(isSafari) {
 function captureUserMedia(mediaConstraints, successCallback, errorCallback) {
     navigator.mediaDevices.getUserMedia(mediaConstraints).then(successCallback).catch(errorCallback);
 }
+
+connection.maxParticipantsAllowed = 4;

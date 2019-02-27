@@ -44,7 +44,16 @@
   ],
   "dependencies": {
     "save-file": "^1.2.0",
-    "socket.io": "latest"
+    "canvas-designer": "latest",
+    "detectrtc": "latest",
+    "fbr": "latest",
+    "getstats": "latest",
+    "multistreamsmixer": "latest",
+    "recordrtc": "latest",
+    "rtcmulticonnection-server": "latest",
+    "socket.io": "latest",
+    "webrtc-adapter": "latest",
+    "webrtc-screen-capturing": "latest"
   },
   "analyze": false,
   "license": "",
