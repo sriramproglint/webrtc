@@ -1,3 +1,5 @@
+
+
 $(document).ready(function() {
     $('#stop-rec-btn').hide();
 });
@@ -82,14 +84,14 @@ connection.removeParticipantMediaElement = function(userId) {
 connection.appendMediaElement = function() {
     //alert(mediaElementList.length);
     if (mediaElementList.length == 0) {
-        let ownMediaElement = getMediaElement(ownElement.element, {
+        let ownMediaElement = getHTMLMediaElement(ownElement.element, {
             title: ownElement.userId,
             buttons: ['mute-audio', 'mute-video'],
             // buttons: ['record-audio','mute-audio', 'mute-video', 'full-screen', 'volume-slider', 'stop','take-snapshot'],
             width: "100%",
             height: "100%",
             showOnMouseEnter: true,
-            streamId: ownElement.streamId
+            streamId: ownElement.name
         });
 
         connection.panel.innerHTML = connection.panel1;
@@ -106,13 +108,13 @@ connection.appendMediaElement = function() {
         document.getElementById('our-face').innerHTML = '';
         document.getElementById('our-face').style.display = 'none';
     } else if (mediaElementList.length == 1) {
-        let ownMediaElement = getMediaElement(ownElement.element, {
+        let ownMediaElement = getHTMLMediaElement(ownElement.element, {
             title: ownElement.userId,
             buttons: ['mute-audio', 'mute-video'],
             width: "100%",
             height: "100%",
             showOnMouseEnter: true,
-            streamId: ownElement.streamId
+            streamId: ownElement.name
         });
 
         connection.panel.innerHTML = connection.panel1;
@@ -129,7 +131,7 @@ connection.appendMediaElement = function() {
 
         ownMediaElement.id = ownElement.streamId;
 
-        let mainFaceElement = getMediaElement(mediaElementList[0].element, {
+        let mainFaceElement = getHTMLMediaElement(mediaElementList[0].element, {
             title: mediaElementList[0].userId,
             buttons: [],
             width: "100%",
@@ -151,7 +153,7 @@ connection.appendMediaElement = function() {
     } else if (mediaElementList.length == 2) {
         document.getElementById('our-face').innerHTML = '';
         document.getElementById('our-face').style.display = 'none';
-        let ownMediaElement = getMediaElement(ownElement.element, {
+        let ownMediaElement = getHTMLMediaElement(ownElement.element, {
             title: ownElement.userId,
             buttons: ['mute-audio', 'mute-video'],
             width: "100%",
@@ -173,7 +175,7 @@ connection.appendMediaElement = function() {
 
         ownMediaElement.id = ownElement.streamId;
 
-        let mainFaceElement = getMediaElement(mediaElementList[0].element, {
+        let mainFaceElement = getHTMLMediaElement(mediaElementList[0].element, {
             title: mediaElementList[0].userId,
             buttons: [],
             width: "100%",
@@ -193,7 +195,7 @@ connection.appendMediaElement = function() {
         mainFaceElement.id = mediaElementList[0].streamId;
 
 
-        let topFaceElement = getMediaElement(mediaElementList[1].element, {
+        let topFaceElement = getHTMLMediaElement(mediaElementList[1].element, {
             title: mediaElementList[1].userId,
             buttons: [],
             width: "100%",
@@ -214,7 +216,7 @@ connection.appendMediaElement = function() {
     } else if (mediaElementList.length == 3) {
         document.getElementById('our-face').innerHTML = '';
         document.getElementById('our-face').style.display = 'none';
-        let ownMediaElement = getMediaElement(ownElement.element, {
+        let ownMediaElement = getHTMLMediaElement(ownElement.element, {
             title: ownElement.userId,
             buttons: ['mute-audio', 'mute-video'],
             width: "100%",
@@ -236,7 +238,7 @@ connection.appendMediaElement = function() {
 
         ownMediaElement.id = ownElement.streamId;
 
-        let mainFaceElement = getMediaElement(mediaElementList[0].element, {
+        let mainFaceElement = getHTMLMediaElement(mediaElementList[0].element, {
             title: mediaElementList[0].userId,
             buttons: [],
             width: "100%",
@@ -255,7 +257,7 @@ connection.appendMediaElement = function() {
 
         mainFaceElement.id = mediaElementList[0].streamId;
 
-        var middleFaceElement = getMediaElement(mediaElementList[1].element, {
+        var middleFaceElement = getHTMLMediaElement(mediaElementList[1].element, {
             title: mediaElementList[1].userId,
             buttons: [],
             width: "100%",
@@ -275,7 +277,7 @@ connection.appendMediaElement = function() {
 
         middleFaceElement.id = mediaElementList[1].streamId;
 
-        let topFaceElement = getMediaElement(mediaElementList[2].element, {
+        let topFaceElement = getHTMLMediaElement(mediaElementList[2].element, {
             title: mediaElementList[2].userId,
             buttons: [],
             width: "100%",
@@ -372,7 +374,7 @@ connection.onstream = function(event, isMe) {
         ownElement = {
             userId: event.userid,
             element: event.mediaElement,
-            streamId: event.streamid,
+            streamId: event.name,
             name: event.name
         }
         connection.appendMediaElement()
@@ -382,6 +384,30 @@ connection.onstream = function(event, isMe) {
     }
     var streamId = event.streamid
 };
+
+// connection.onstream = function(event) {
+//     event.mediaElement.removeAttribute('src');
+//     event.mediaElement.removeAttribute('srcObject');
+//     var video = document.createElement('video');
+//     video.controls = true;
+//     if(event.type === 'local') {
+//         video.muted = true;
+//     }
+//     video.srcObject = event.stream;
+//     var width = parseInt(connection.videosContainer.clientWidth / 2) - 20;
+//     var mediaElement = getHTMLMediaElement(video, {
+//         title: event.userid,
+//         buttons: ['full-screen'],
+//         width: width,
+//         showOnMouseEnter: false
+//     });
+//     connection.videosContainer.appendChild(mediaElement);
+//     setTimeout(function() {
+//         mediaElement.media.play();
+//     }, 5000);
+//     mediaElement.id = event.streamid;
+// };
+
 connection.onstreamended = function(event) {
     var mediaElement = document.getElementById(event.streamid);
     if (mediaElement) {
