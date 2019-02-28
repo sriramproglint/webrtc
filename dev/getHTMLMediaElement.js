@@ -8,7 +8,7 @@ function getHTMLMediaElement(mediaElement, config) {
 
         var mediaStream = mediaElement;
         mediaElement = document.createElement(mediaStream.getVideoTracks().length ? 'video' : 'audio');
-
+      // mediaElement = document.createElement('video');
         try {
             mediaElement.setAttributeNode(document.createAttribute('autoplay'));
             mediaElement.setAttributeNode(document.createAttribute('playsinline'));

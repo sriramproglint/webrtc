@@ -91,7 +91,7 @@ connection.appendMediaElement = function() {
             width: "100%",
             height: "100%",
             showOnMouseEnter: true,
-            streamId: ownElement.name
+            streamId: ownElement.streamId
         });
 
         connection.panel.innerHTML = connection.panel1;
@@ -114,7 +114,7 @@ connection.appendMediaElement = function() {
             width: "100%",
             height: "100%",
             showOnMouseEnter: true,
-            streamId: ownElement.name
+            streamId: ownElement.streamId
         });
 
         connection.panel.innerHTML = connection.panel1;
@@ -374,7 +374,7 @@ connection.onstream = function(event, isMe) {
         ownElement = {
             userId: event.userid,
             element: event.mediaElement,
-            streamId: event.name,
+            streamId: event.streamid,
             name: event.name
         }
         connection.appendMediaElement()
