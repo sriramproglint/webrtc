@@ -102,7 +102,7 @@ connection.appendMediaElement = function() {
 
         setTimeout(function() {
             ownMediaElement.media.play();
-        }, 10);
+        }, 100);
 
         ownMediaElement.id = ownElement.streamId;
         document.getElementById('our-face').innerHTML = '';
@@ -127,7 +127,7 @@ connection.appendMediaElement = function() {
 
         setTimeout(function() {
             ownMediaElement.media.play();
-        }, 10);
+        }, 300);
 
         ownMediaElement.id = ownElement.streamId;
 
@@ -146,7 +146,7 @@ connection.appendMediaElement = function() {
 
          setTimeout(function() {
             mainFaceElement.media.play();
-        }, 10);
+        }, 500);
 
         mainFaceElement.id = mediaElementList[0].streamId;
 
@@ -171,7 +171,7 @@ connection.appendMediaElement = function() {
 
         setTimeout(function() {
             ownMediaElement.media.play();
-        }, 10);
+        }, 700);
 
         ownMediaElement.id = ownElement.streamId;
 
@@ -190,7 +190,7 @@ connection.appendMediaElement = function() {
 
         setTimeout(function() {
             mainFaceElement.media.play();
-        }, 10);
+        }, 900);
 
         mainFaceElement.id = mediaElementList[0].streamId;
 
@@ -210,7 +210,7 @@ connection.appendMediaElement = function() {
         topFaceElement.setAttribute('playsinline', true)
         setTimeout(function() {
             topFaceElement.media.play();
-        }, 10);
+        }, 1100);
 
         topFaceElement.id = mediaElementList[1].streamId;
     } else if (mediaElementList.length == 3) {
@@ -234,7 +234,7 @@ connection.appendMediaElement = function() {
 
         setTimeout(function() {
             ownMediaElement.media.play();
-        }, 10);
+        }, 1300);
 
         ownMediaElement.id = ownElement.streamId;
 
@@ -253,7 +253,7 @@ connection.appendMediaElement = function() {
 
         setTimeout(function() {
             mainFaceElement.media.play();
-        }, 10);
+        }, 1500);
 
         mainFaceElement.id = mediaElementList[0].streamId;
 
@@ -273,7 +273,7 @@ connection.appendMediaElement = function() {
 
         setTimeout(function() {
             middleFaceElement.media.play();
-        }, 10);
+        }, 1700);
 
         middleFaceElement.id = mediaElementList[1].streamId;
 
@@ -293,7 +293,7 @@ connection.appendMediaElement = function() {
 
         setTimeout(function() {
             topFaceElement.media.play();
-        }, 10);
+        }, 1900);
 
         topFaceElement.id = mediaElementList[2].streamId;
     }
