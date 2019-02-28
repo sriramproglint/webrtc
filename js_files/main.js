@@ -57,6 +57,8 @@ connection.videosContainer = document.getElementById('videos-container');
 connection.getAllParticipantsMediaElement = function() {
     return mediaElementList;
 }
+
+let mediaHTMLElementArray = []
 connection.pushMediaElement = function(userId, mediaElement, streamId, name) {
    var index= mediaElementList.findIndex(function(o){
         return o.userId == userId
@@ -68,7 +70,32 @@ connection.pushMediaElement = function(userId, mediaElement, streamId, name) {
             streamId: streamId,
             name: name
         })
-        connection.appendMediaElement()
+        let ownMediaElement = getHTMLMediaElement(mediaElement, {
+            title: userId,
+            buttons: ['mute-audio', 'mute-video'],
+            // buttons: ['record-audio','mute-audio', 'mute-video', 'full-screen', 'volume-slider', 'stop','take-snapshot'],
+            width: "100%",
+            height: "100%",
+            showOnMouseEnter: true,
+            streamId: streamId
+        });
+
+        connection.panel.innerHTML = connection.panel1;
+        
+        ownMediaElement.media.setAttribute('id', 'ownMediaElement')
+        ownMediaElement.media.setAttribute('autoplay', 'autoplay')
+        ownMediaElement.media.setAttribute('playsinline', true)
+        ownMediaElement.setAttribute('playsinline', true)
+
+        setTimeout(function() {
+            // ownMediaElement.media.play();
+            mediaHTMLElementArray.push(ownMediaElement)
+            // $('#video-container-opp').appendTo(ownMediaElement)
+            // document.getElementById('video-container-opp').appendChild(ownMediaElement);
+            connection.appendMediaElement()
+        });
+        // ownMediaElement.id = ownElement.streamId;
+        
     }
 }
 
@@ -76,226 +103,269 @@ connection.removeParticipantMediaElement = function(userId) {
     mediaElementList.forEach(function(media, index) {
         if (media.userId == userId) {
             mediaElementList.splice(index, 1)
+            mediaHTMLElementArray.splice(index, 1)
         }
     })
     connection.appendMediaElement()
 }
 
 connection.appendMediaElement = function() {
-    //alert(mediaElementList.length);
-    if (mediaElementList.length == 0) {
-        let ownMediaElement = getHTMLMediaElement(ownElement.element, {
-            title: ownElement.userId,
-            buttons: ['mute-audio', 'mute-video'],
-            // buttons: ['record-audio','mute-audio', 'mute-video', 'full-screen', 'volume-slider', 'stop','take-snapshot'],
-            width: "100%",
-            height: "100%",
-            showOnMouseEnter: true,
-            streamId: ownElement.streamId
-        });
-
-        connection.panel.innerHTML = connection.panel1;
-        document.getElementById('video-container-opp').appendChild(ownMediaElement);
-        ownMediaElement.media.setAttribute('autoplay', 'autoplay')
-        ownMediaElement.media.setAttribute('playsinline', true)
-        ownMediaElement.setAttribute('playsinline', true)
-
-        setTimeout(function() {
-            ownMediaElement.media.play();
-        }, 100);
-
-        ownMediaElement.id = ownElement.streamId;
+    // alert(mediaElementList.length);
+    if (mediaElementList.length == 1) {
         document.getElementById('our-face').innerHTML = '';
         document.getElementById('our-face').style.display = 'none';
-    } else if (mediaElementList.length == 1) {
-        let ownMediaElement = getHTMLMediaElement(ownElement.element, {
-            title: ownElement.userId,
-            buttons: ['mute-audio', 'mute-video'],
-            width: "100%",
-            height: "100%",
-            showOnMouseEnter: true,
-            streamId: ownElement.streamId
-        });
+        // let ownMediaElement = getHTMLMediaElement(ownElement.element, {
+        //     title: ownElement.userId,
+        //     buttons: ['mute-audio', 'mute-video'],
+        //     // buttons: ['record-audio','mute-audio', 'mute-video', 'full-screen', 'volume-slider', 'stop','take-snapshot'],
+        //     width: "100%",
+        //     height: "100%",
+        //     showOnMouseEnter: true,
+        //     streamId: ownElement.streamId
+        // });
 
         connection.panel.innerHTML = connection.panel1;
+        
+        // ownMediaElement.media.setAttribute('id', 'ownMediaElement')
+        // ownMediaElement.media.setAttribute('autoplay', 'autoplay')
+        // ownMediaElement.media.setAttribute('playsinline', true)
+        // ownMediaElement.setAttribute('playsinline', true)
+        // $('#video-container-opp').appendTo(mediaHTMLElementArray[0])
+        // setTimeout(function() {
+        //     ownMediaElement.media.play();
+        //     mediaHTMLElementArray.push(ownMediaElement)
+            
+            document.getElementById('video-container-opp').appendChild(mediaHTMLElementArray[0]);
+            setTimeout(function() {
+                mediaHTMLElementArray[0].media.play();
+            });
+        // });
+
+        mediaHTMLElementArray[0].id = mediaHTMLElementArray[0].streamId;
+
+        
         document.getElementById('our-face').innerHTML = '';
-        document.getElementById('our-face').appendChild(ownMediaElement);
-        document.getElementById('our-face').style.display = 'block';
-        ownMediaElement.media.setAttribute('autoplay', 'autoplay')
-        ownMediaElement.media.setAttribute('playsinline', true)
-        ownMediaElement.setAttribute('playsinline', true)
-
-        setTimeout(function() {
-            ownMediaElement.media.play();
-        }, 300);
-
-        ownMediaElement.id = ownElement.streamId;
-
-        let mainFaceElement = getHTMLMediaElement(mediaElementList[0].element, {
-            title: mediaElementList[0].userId,
-            buttons: [],
-            width: "100%",
-            height: "100%",
-            showOnMouseEnter: true
-        });
-
-        document.getElementById('video-container-opp').appendChild(mainFaceElement);
-        mainFaceElement.media.setAttribute('autoplay', 'autoplay')
-        mainFaceElement.media.setAttribute('playsinline', true)
-        mainFaceElement.setAttribute('playsinline', true)
-
-         setTimeout(function() {
-            mainFaceElement.media.play();
-        }, 500);
-
-        mainFaceElement.id = mediaElementList[0].streamId;
-
+        document.getElementById('our-face').style.display = 'none';
     } else if (mediaElementList.length == 2) {
+        // let ownMediaElement = getHTMLMediaElement(ownElement.element, {
+        //     title: ownElement.userId,
+        //     buttons: ['mute-audio', 'mute-video'],
+        //     width: "100%",
+        //     height: "100%",
+        //     showOnMouseEnter: true,
+        //     streamId: ownElement.streamId
+        // });
+
+        connection.panel.innerHTML = connection.panel1;
         document.getElementById('our-face').innerHTML = '';
-        document.getElementById('our-face').style.display = 'none';
-        let ownMediaElement = getHTMLMediaElement(ownElement.element, {
-            title: ownElement.userId,
-            buttons: ['mute-audio', 'mute-video'],
-            width: "100%",
-            height: "100%",
-            showOnMouseEnter: true,
-            streamId: ownElement.streamId
-        });
+        document.getElementById('our-face').appendChild(mediaHTMLElementArray[0]);
+        document.getElementById('our-face').style.display = 'block';
+        // ownMediaElement.media.setAttribute('autoplay', 'autoplay')
+        // ownMediaElement.media.setAttribute('playsinline', true)
+        // ownMediaElement.setAttribute('playsinline', true)
 
-        connection.panel.innerHTML = connection.panel2;
+        // setTimeout(function() {
+        //     ownMediaElement.media.play();
+        // }, 300);
 
-        document.getElementById('videos-container').appendChild(ownMediaElement);
-        ownMediaElement.media.setAttribute('autoplay', 'autoplay')
-        ownMediaElement.media.setAttribute('playsinline', true)
-        ownMediaElement.setAttribute('playsinline', true)
+        // ownMediaElement.id = ownElement.streamId;
 
+        // let mainFaceElement = getHTMLMediaElement(mediaElementList[0].element, {
+        //     title: mediaElementList[0].userId,
+        //     buttons: [],
+        //     width: "100%",
+        //     height: "100%",
+        //     showOnMouseEnter: true
+        // });
+
+        document.getElementById('video-container-opp').appendChild(mediaHTMLElementArray[1]);
+        // mainFaceElement.media.setAttribute('autoplay', 'autoplay')
+        // mainFaceElement.media.setAttribute('playsinline', true)
+        // mainFaceElement.setAttribute('playsinline', true)
+
+        //  setTimeout(function() {
+        //     mainFaceElement.media.play();
+        // }, 500);
+
+        // mainFaceElement.id = mediaElementList[0].streamId;
         setTimeout(function() {
-            ownMediaElement.media.play();
-        }, 700);
-
-        ownMediaElement.id = ownElement.streamId;
-
-        let mainFaceElement = getHTMLMediaElement(mediaElementList[0].element, {
-            title: mediaElementList[0].userId,
-            buttons: [],
-            width: "100%",
-            height: "100%",
-            showOnMouseEnter: true
+            mediaHTMLElementArray[0].media.play();
+            mediaHTMLElementArray[1].media.play();
         });
+        // });
 
-        document.getElementById('video-container-opp').appendChild(mainFaceElement);
-        mainFaceElement.media.setAttribute('autoplay', 'autoplay')
-        mainFaceElement.media.setAttribute('playsinline', true)
-        mainFaceElement.setAttribute('playsinline', true)
-
-        setTimeout(function() {
-            mainFaceElement.media.play();
-        }, 900);
-
-        mainFaceElement.id = mediaElementList[0].streamId;
+        mediaHTMLElementArray[0].id = mediaHTMLElementArray[0].streamId;
+        mediaHTMLElementArray[1].id = mediaHTMLElementArray[1].streamId;
 
 
-        let topFaceElement = getHTMLMediaElement(mediaElementList[1].element, {
-            title: mediaElementList[1].userId,
-            buttons: [],
-            width: "100%",
-            height: "100%",
-            showOnMouseEnter: true
-        });
-
-        document.getElementById('video-container-opps-1').appendChild(topFaceElement);
-        topFaceElement.setAttribute('onclick', "maximizeVideo('" + mediaElementList[1].userId + "')")
-        topFaceElement.media.setAttribute('autoplay', 'autoplay')
-        topFaceElement.media.setAttribute('playsinline', true)
-        topFaceElement.setAttribute('playsinline', true)
-        setTimeout(function() {
-            topFaceElement.media.play();
-        }, 1100);
-
-        topFaceElement.id = mediaElementList[1].streamId;
     } else if (mediaElementList.length == 3) {
         document.getElementById('our-face').innerHTML = '';
         document.getElementById('our-face').style.display = 'none';
-        let ownMediaElement = getHTMLMediaElement(ownElement.element, {
-            title: ownElement.userId,
-            buttons: ['mute-audio', 'mute-video'],
-            width: "100%",
-            height: "100%",
-            showOnMouseEnter: true,
-            streamId: ownElement.streamId
+        // let ownMediaElement = getHTMLMediaElement(ownElement.element, {
+        //     title: ownElement.userId,
+        //     buttons: ['mute-audio', 'mute-video'],
+        //     width: "100%",
+        //     height: "100%",
+        //     showOnMouseEnter: true,
+        //     streamId: ownElement.streamId
+        // });
+
+        connection.panel.innerHTML = connection.panel2;
+
+        document.getElementById('videos-container').appendChild(mediaHTMLElementArray[0]);
+        // ownMediaElement.media.setAttribute('autoplay', 'autoplay')
+        // ownMediaElement.media.setAttribute('playsinline', true)
+        // ownMediaElement.setAttribute('playsinline', true)
+
+        // setTimeout(function() {
+        //     ownMediaElement.media.play();
+        // }, 700);
+
+        // ownMediaElement.id = ownElement.streamId;
+
+        // let mainFaceElement = getHTMLMediaElement(mediaElementList[0].element, {
+        //     title: mediaElementList[0].userId,
+        //     buttons: [],
+        //     width: "100%",
+        //     height: "100%",
+        //     showOnMouseEnter: true
+        // });
+
+        document.getElementById('video-container-opp').appendChild(mediaHTMLElementArray[1]);
+        // mainFaceElement.media.setAttribute('autoplay', 'autoplay')
+        // mainFaceElement.media.setAttribute('playsinline', true)
+        // mainFaceElement.setAttribute('playsinline', true)
+
+        // setTimeout(function() {
+        //     mainFaceElement.media.play();
+        // }, 900);
+
+        // mainFaceElement.id = mediaElementList[0].streamId;
+
+
+        // let topFaceElement = getHTMLMediaElement(mediaElementList[1].element, {
+        //     title: mediaElementList[1].userId,
+        //     buttons: [],
+        //     width: "100%",
+        //     height: "100%",
+        //     showOnMouseEnter: true
+        // });
+
+        document.getElementById('video-container-opps-1').appendChild(mediaHTMLElementArray[2]);
+        // topFaceElement.setAttribute('onclick', "maximizeVideo('" + mediaElementList[1].userId + "')")
+        // topFaceElement.media.setAttribute('autoplay', 'autoplay')
+        // topFaceElement.media.setAttribute('playsinline', true)
+        // topFaceElement.setAttribute('playsinline', true)
+        // setTimeout(function() {
+        //     topFaceElement.media.play();
+        // }, 1100);
+
+        // topFaceElement.id = mediaElementList[1].streamId;
+        setTimeout(function() {
+            mediaHTMLElementArray[0].media.play();
+            mediaHTMLElementArray[1].media.play();
+            mediaHTMLElementArray[2].media.play();
         });
+        // });
+
+        mediaHTMLElementArray[0].id = mediaHTMLElementArray[0].streamId;
+        mediaHTMLElementArray[1].id = mediaHTMLElementArray[1].streamId;
+        mediaHTMLElementArray[2].id = mediaHTMLElementArray[2].streamId;
+    } else if (mediaElementList.length == 4) {
+        document.getElementById('our-face').innerHTML = '';
+        document.getElementById('our-face').style.display = 'none';
+        // let ownMediaElement = getHTMLMediaElement(ownElement.element, {
+        //     title: ownElement.userId,
+        //     buttons: ['mute-audio', 'mute-video'],
+        //     width: "100%",
+        //     height: "100%",
+        //     showOnMouseEnter: true,
+        //     streamId: ownElement.streamId
+        // });
 
         connection.panel.innerHTML = connection.panel3;
 
-        document.getElementById('videos-container').appendChild(ownMediaElement);
-        ownMediaElement.media.setAttribute('autoplay', 'autoplay')
-        ownMediaElement.media.setAttribute('playsinline', true)
-        ownMediaElement.setAttribute('playsinline', true)
+        document.getElementById('videos-container').appendChild(mediaHTMLElementArray[0]);
+        // ownMediaElement.media.setAttribute('autoplay', 'autoplay')
+        // ownMediaElement.media.setAttribute('playsinline', true)
+        // ownMediaElement.setAttribute('playsinline', true)
 
+        // setTimeout(function() {
+        //     ownMediaElement.media.play();
+        // }, 1300);
+
+        // ownMediaElement.id = ownElement.streamId;
+
+        // let mainFaceElement = getHTMLMediaElement(mediaElementList[0].element, {
+        //     title: mediaElementList[0].userId,
+        //     buttons: [],
+        //     width: "100%",
+        //     height: "100%",
+        //     showOnMouseEnter: true
+        // });
+
+        document.getElementById('video-container-opp').appendChild(mediaHTMLElementArray[1]);
+        // mainFaceElement.media.setAttribute('autoplay', 'autoplay')
+        // mainFaceElement.media.setAttribute('playsinline', true)
+        // mainFaceElement.setAttribute('playsinline', true)
+
+        // setTimeout(function() {
+        //     mainFaceElement.media.play();
+        // }, 1500);
+
+        // mainFaceElement.id = mediaElementList[0].streamId;
+
+        // var middleFaceElement = getHTMLMediaElement(mediaElementList[1].element, {
+        //     title: mediaElementList[1].userId,
+        //     buttons: [],
+        //     width: "100%",
+        //     height: "100%",
+        //     showOnMouseEnter: true
+        // });
+
+        document.getElementById('video-container-opps-1').appendChild(mediaHTMLElementArray[2]);
+        // middleFaceElement.media.setAttribute('autoplay', 'autoplay')
+        // middleFaceElement.setAttribute('onclick', "maximizeVideo('" + mediaElementList[1].userId + "')")
+        // middleFaceElement.media.setAttribute('playsinline', true)
+        // middleFaceElement.setAttribute('playsinline', true)
+
+        // setTimeout(function() {
+        //     middleFaceElement.media.play();
+        // }, 1700);
+
+        // middleFaceElement.id = mediaElementList[1].streamId;
+
+        // let topFaceElement = getHTMLMediaElement(mediaElementList[2].element, {
+        //     title: mediaElementList[2].userId,
+        //     buttons: [],
+        //     width: "100%",
+        //     height: "100%",
+        //     showOnMouseEnter: true
+        // });
+
+        document.getElementById('video-container-opps-2').appendChild(mediaHTMLElementArray[3]);
+        // topFaceElement.media.setAttribute('autoplay', 'autoplay')
+        // topFaceElement.setAttribute('onclick', "maximizeVideo('" + mediaElementList[2].userId + "')")
+        // topFaceElement.media.setAttribute('playsinline', true)
+        // topFaceElement.setAttribute('playsinline', true)
+
+        // setTimeout(function() {
+        //     topFaceElement.media.play();
+        // }, 1900);
+
+        // topFaceElement.id = mediaElementList[2].streamId;
         setTimeout(function() {
-            ownMediaElement.media.play();
-        }, 1300);
-
-        ownMediaElement.id = ownElement.streamId;
-
-        let mainFaceElement = getHTMLMediaElement(mediaElementList[0].element, {
-            title: mediaElementList[0].userId,
-            buttons: [],
-            width: "100%",
-            height: "100%",
-            showOnMouseEnter: true
+            mediaHTMLElementArray[0].media.play();
+            mediaHTMLElementArray[1].media.play();
+            mediaHTMLElementArray[2].media.play();
+            mediaHTMLElementArray[3].media.play();
         });
+        // });
 
-        document.getElementById('video-container-opp').appendChild(mainFaceElement);
-        mainFaceElement.media.setAttribute('autoplay', 'autoplay')
-        mainFaceElement.media.setAttribute('playsinline', true)
-        mainFaceElement.setAttribute('playsinline', true)
-
-        setTimeout(function() {
-            mainFaceElement.media.play();
-        }, 1500);
-
-        mainFaceElement.id = mediaElementList[0].streamId;
-
-        var middleFaceElement = getHTMLMediaElement(mediaElementList[1].element, {
-            title: mediaElementList[1].userId,
-            buttons: [],
-            width: "100%",
-            height: "100%",
-            showOnMouseEnter: true
-        });
-
-        document.getElementById('video-container-opps-1').appendChild(middleFaceElement);
-        middleFaceElement.media.setAttribute('autoplay', 'autoplay')
-        middleFaceElement.setAttribute('onclick', "maximizeVideo('" + mediaElementList[1].userId + "')")
-        middleFaceElement.media.setAttribute('playsinline', true)
-        middleFaceElement.setAttribute('playsinline', true)
-
-        setTimeout(function() {
-            middleFaceElement.media.play();
-        }, 1700);
-
-        middleFaceElement.id = mediaElementList[1].streamId;
-
-        let topFaceElement = getHTMLMediaElement(mediaElementList[2].element, {
-            title: mediaElementList[2].userId,
-            buttons: [],
-            width: "100%",
-            height: "100%",
-            showOnMouseEnter: true
-        });
-
-        document.getElementById('video-container-opps-2').appendChild(topFaceElement);
-        topFaceElement.media.setAttribute('autoplay', 'autoplay')
-        topFaceElement.setAttribute('onclick', "maximizeVideo('" + mediaElementList[2].userId + "')")
-        topFaceElement.media.setAttribute('playsinline', true)
-        topFaceElement.setAttribute('playsinline', true)
-
-        setTimeout(function() {
-            topFaceElement.media.play();
-        }, 1900);
-
-        topFaceElement.id = mediaElementList[2].streamId;
+        mediaHTMLElementArray[0].id = mediaHTMLElementArray[0].streamId;
+        mediaHTMLElementArray[1].id = mediaHTMLElementArray[1].streamId;
+        mediaHTMLElementArray[2].id = mediaHTMLElementArray[2].streamId;
+        mediaHTMLElementArray[3].id = mediaHTMLElementArray[3].streamId;
     }
 
     connection.getMessageParticipant()
@@ -371,13 +441,14 @@ connection.onstream = function(event, isMe) {
     audioTrackArray.push(event.stream.getAudioTracks()[0])
     streamArray.push(event.stream);
     if (isMe) {
-        ownElement = {
-            userId: event.userid,
-            element: event.mediaElement,
-            streamId: event.streamid,
-            name: event.name
-        }
-        connection.appendMediaElement()
+        // ownElement = {
+        //     userId: event.userid,
+        //     element: event.mediaElement,
+        //     streamId: event.streamid,
+        //     name: event.name
+        // }
+        connection.pushMediaElement(event.userid, event.mediaElement, event.streamid, event.name)
+        // connection.appendMediaElement()
     } else {
         connection.pushMediaElement(event.userid, event.mediaElement, event.streamid, event.name)
      //   connection.appendMediaElement()
