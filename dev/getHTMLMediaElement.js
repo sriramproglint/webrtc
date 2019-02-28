@@ -46,45 +46,99 @@ function getHTMLMediaElement(mediaElement, config) {
     mediaElementContainer.appendChild(mediaControls);
 
     if (buttons.has('mute-audio')) {
-        var muteAudio = document.createElement('div');
-        muteAudio.className = 'control ' + (config.toggle.has('mute-audio') ? 'unmute-audio selected' : 'mute-audio');
-        mediaControls.appendChild(muteAudio);
+        var muteAudio = document.getElementById('microphone');
+        // muteAudio.className = 'control ' + (config.toggle.has('mute-audio') ? 'unmute-audio selected' : 'mute-audio');
+        // mediaControls.appendChild(muteAudio);    
 
+        
         muteAudio.onclick = function() {
+
             if (muteAudio.className.indexOf('unmute-audio') != -1) {
-                muteAudio.className = muteAudio.className.replace('unmute-audio selected', 'mute-audio');
-                mediaElement.muted = false;
-                mediaElement.volume = 1;
+
+                muteAudio.className = muteAudio.className.replace('unmute-audio', 'mute-audio');
+                muteAudio.innerHTML = `<i class="fas fa-microphone"></i>`;
+                
+                // connection.streamEvents[config.streamId].stream.unmute('audio');
+                // if(connection.streamEvents[config.streamId].session) {
+                //     connection.streamEvents[config.streamId].session.audio = false
+                // } else {
+                    connection.streamEvents[config.streamId].stream.unmute('audio');
+                // }
+                // connection.session.audio = true;
+                console.log(connection.session);
+                // mediaElement.muted = false;
+                // connection.streamEvents[config.streamId].stream.isAudio = true;
+                // mediaElement.volume = 0;
                 if (config.onUnMuted) config.onUnMuted('audio');
+
             } else {
-                muteAudio.className = muteAudio.className.replace('mute-audio', 'unmute-audio selected');
-                mediaElement.muted = true;
-                mediaElement.volume = 0;
+
+                muteAudio.className = muteAudio.className.replace('mute-audio', 'unmute-audio');
+                muteAudio.innerHTML = `<i class="fas fa-microphone-slash"></i>`;
+                
+                // mediaElement.muted = true;
+                // connection.streamEvents[config.streamId].stream.isAudio = false;
+
+                // if(connection.streamEvents[config.streamId].session) {
+                //     connection.streamEvents[config.streamId].session.audio = true
+                // } else {
+                connection.streamEvents[config.streamId].stream.mute('audio');
+                // }
+                // mediaElement.volume = 1;
                 if (config.onMuted) config.onMuted('audio');
             }
         };
+        // muteAudio.onclick = function() {
+        //     if (muteAudio.className.indexOf('unmute-audio') != -1) {
+        //         muteAudio.className = muteAudio.className.replace('unmute-audio selected', 'mute-audio');
+        //         mediaElement.muted = false;
+        //         mediaElement.volume = 1;
+        //         if (config.onUnMuted) config.onUnMuted('audio');
+        //     } else {
+        //         muteAudio.className = muteAudio.className.replace('mute-audio', 'unmute-audio selected');
+        //         mediaElement.muted = true;
+        //         mediaElement.volume = 0;
+        //         if (config.onMuted) config.onMuted('audio');
+        //     }
+        // };
     }
 
     if (buttons.has('mute-video')) {
-        var muteVideo = document.createElement('div');
-        muteVideo.className = 'control ' + (config.toggle.has('mute-video') ? 'unmute-video selected' : 'mute-video');
-        mediaControls.appendChild(muteVideo);
-
+        var muteVideo = document.getElementById('videocamera');
         muteVideo.onclick = function() {
             if (muteVideo.className.indexOf('unmute-video') != -1) {
-                muteVideo.className = muteVideo.className.replace('unmute-video selected', 'mute-video');
-                mediaElement.muted = false;
-                mediaElement.volume = 1;
-                mediaElement.play();
+                muteVideo.className = muteVideo.className.replace('unmute-video', 'mute-video');
+                muteVideo.innerHTML = `<i class="fas fa-video "></i>`;
+            
+                connection.streamEvents[config.streamId].stream.unmute('video');
                 if (config.onUnMuted) config.onUnMuted('video');
             } else {
-                muteVideo.className = muteVideo.className.replace('mute-video', 'unmute-video selected');
-                mediaElement.muted = true;
-                mediaElement.volume = 0;
-                mediaElement.pause();
+                muteVideo.className = muteVideo.className.replace('mute-video', 'unmute-video');
+                muteVideo.innerHTML = `<i class="fas fa-video-slash"></i>`;
+                
+                connection.streamEvents[config.streamId].stream.mute('video');
                 if (config.onMuted) config.onMuted('video');
             }
         };
+        // var muteVideo = document.createElement('div');
+        // muteVideo.className = 'control ' + (config.toggle.has('mute-video') ? 'unmute-video selected' : 'mute-video');
+        // mediaControls.appendChild(muteVideo);
+
+        // muteVideo.onclick = function() {
+        //     if (muteVideo.className.indexOf('unmute-video') != -1) {
+        //         muteVideo.className = muteVideo.className.replace('unmute-video selected', 'mute-video');
+        //         mediaElement.muted = false;
+        //         mediaElement.volume = 1;
+        //         mediaElement.play();
+        //         if (config.onUnMuted) config.onUnMuted('video');
+        //     } else {
+        //         muteVideo.className = muteVideo.className.replace('mute-video', 'unmute-video selected');
+        //         mediaElement.muted = true;
+        //         mediaElement.volume = 0;
+        //         mediaElement.pause();
+        //         if (config.onMuted) config.onMuted('video');
+        //     }
+        // };
     }
 
     if (buttons.has('take-snapshot')) {
