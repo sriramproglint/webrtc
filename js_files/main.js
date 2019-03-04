@@ -69,6 +69,15 @@ connection.pushMediaElement = function(userId, mediaElement, streamId, name) {
             name: name
         })
         connection.appendMediaElement()
+    } else {
+        mediaElementList[index] = {
+            userId: userId,
+            element: mediaElement,
+            streamId: streamId,
+            name: name
+        }
+      
+        connection.appendMediaElement()
     }
 }
 
