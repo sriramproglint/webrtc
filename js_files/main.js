@@ -6,6 +6,7 @@ $(document).ready(function() {
 
 $(".video-chat").hide();
 var mediaElementList = [];
+var mediaHTMLElementList = [];
 var ownElement = undefined;
 
 var isSafari = true;
@@ -21,35 +22,35 @@ if (ua.indexOf('safari') != -1) {
 }
 
 //initialize the connections
-var connection = new RTCMultiConnection();
+window.connection = new RTCMultiConnection();
 
-connection.panel1 = `<div class="flex-view" id="container-1">
-                        <div class="friend-face" id="video-container-opp">
-                        </div>
-                    </div>`;
+connection.panel1 = '<div class="flex-view" id="container-1">'+
+                        '<div class="friend-face" id="first-video-container-opp">'+
+                        '</div>'+
+                    '</div>';
 
-connection.panel2 = `<div class="flex-view" id="container-1">
-                        <div class="friend-face" id="video-container-opp">
-                        </div>
-                    </div>
-                    <div class="flex-view flexColumn" id="container-2">
-                        <div class="friend-face" id="video-container-opps-1">
-                        </div>
-                        <div class="friend-face" id="videos-container">
-                        </div>
-                    </div>`;
-connection.panel3 = `<div class="flex-view" id="container-1">
-                        <div class="friend-face" id="video-container-opp">
-                        </div>
-                    </div>
-                    <div class="flex-view flexColumn" id="container-2">
-                        <div class="friend-face" id="video-container-opps-2">
-                        </div>
-                        <div class="friend-face" id="video-container-opps-1">
-                        </div>
-                        <div class="friend-face" id="videos-container">
-                        </div>
-                    </div>`;
+connection.panel2 = '<div class="flex-view" id="container-1">'+
+                        '<div class="friend-face" id="second-video-container-opp">'+
+                        '</div>'+
+                    '</div>'+
+                    '<div class="flex-view flexColumn" id="container-2">'+
+                        '<div class="friend-face" id="second-video-container-opps-1">'+
+                        '</div>'+
+                        '<div class="friend-face" id="second-videos-container">'+
+                        '</div>'+
+                    '</div>';
+connection.panel3 = '<div class="flex-view" id="container-1">'+
+                        '<div class="friend-face" id="third-video-container-opp">'+
+                        '</div>'+
+                    '</div>'+
+                    '<div class="flex-view flexColumn" id="container-2">'+
+                        '<div class="friend-face" id="third-video-container-opps-2">'+
+                        '</div>'+
+                        '<div class="friend-face" id="third-video-container-opps-1">'+
+                        '</div>'+
+                        '<div class="friend-face" id="third-videos-container">'+
+                        '</div>'+
+                    '</div>';
 connection.panel = document.getElementById('panel');
 connection.ourFace = document.getElementById('our-face');
 connection.videosContainer = document.getElementById('videos-container');
@@ -61,6 +62,21 @@ connection.pushMediaElement = function(userId, mediaElement, streamId, name) {
    var index= mediaElementList.findIndex(function(o){
         return o.userId == userId
     })
+    let ownMediaElement = getHTMLMediaElement(mediaElement, {
+        // title: name,
+        title: '',
+        buttons: ['mute-audio', 'mute-video'],
+        width: "100%",
+        height: "100%",
+        showOnMouseEnter: true,
+        streamId: streamId
+    });
+    console.log(ownElement);
+    ownMediaElement.media.setAttribute('autoplay', 'autoplay')
+    ownMediaElement.media.setAttribute('playsinline', true)
+    ownMediaElement.setAttribute('playsinline', true)
+
+    ownMediaElement.id = ownElement.streamId;
     if(index == -1){
         mediaElementList.push({
             userId: userId,
@@ -68,6 +84,7 @@ connection.pushMediaElement = function(userId, mediaElement, streamId, name) {
             streamId: streamId,
             name: name
         })
+        mediaHTMLElementList.push(ownMediaElement)
         connection.appendMediaElement()
     } else {
         mediaElementList[index] = {
@@ -76,7 +93,7 @@ connection.pushMediaElement = function(userId, mediaElement, streamId, name) {
             streamId: streamId,
             name: name
         }
-      
+        mediaHTMLElementList[index] = ownMediaElement
         connection.appendMediaElement()
     }
 }
@@ -85,13 +102,13 @@ connection.removeParticipantMediaElement = function(userId) {
     mediaElementList.forEach(function(media, index) {
         if (media.userId == userId) {
             mediaElementList.splice(index, 1)
+            mediaHTMLElementList.splice(index, 1)
         }
     })
     connection.appendMediaElement()
 }
 
-connection.appendMediaElement = function() {
-    //alert(mediaElementList.length);
+connection.appendMediaElement_old = function() {
     if (mediaElementList.length == 0) {
         let ownMediaElement = getHTMLMediaElement(ownElement.element, {
             title: ownElement.userId,
@@ -109,9 +126,9 @@ connection.appendMediaElement = function() {
         ownMediaElement.media.setAttribute('playsinline', true)
         ownMediaElement.setAttribute('playsinline', true)
 
-        setTimeout(function() {
-            ownMediaElement.media.play();
-        }, 100);
+        // setTimeout(function() {
+        //     ownMediaElement.media.play();
+        // }, 100);
 
         ownMediaElement.id = ownElement.streamId;
         document.getElementById('our-face').innerHTML = '';
@@ -134,9 +151,9 @@ connection.appendMediaElement = function() {
         ownMediaElement.media.setAttribute('playsinline', true)
         ownMediaElement.setAttribute('playsinline', true)
 
-        setTimeout(function() {
-            ownMediaElement.media.play();
-        }, 300);
+        // setTimeout(function() {
+        //     ownMediaElement.media.play();
+        // }, 300);
 
         ownMediaElement.id = ownElement.streamId;
 
@@ -153,9 +170,9 @@ connection.appendMediaElement = function() {
         mainFaceElement.media.setAttribute('playsinline', true)
         mainFaceElement.setAttribute('playsinline', true)
 
-         setTimeout(function() {
-            mainFaceElement.media.play();
-        }, 400);
+        //  setTimeout(function() {
+        //     mainFaceElement.media.play();
+        // }, 400);
 
         mainFaceElement.id = mediaElementList[0].streamId;
 
@@ -178,9 +195,9 @@ connection.appendMediaElement = function() {
         ownMediaElement.media.setAttribute('playsinline', true)
         ownMediaElement.setAttribute('playsinline', true)
 
-        setTimeout(function() {
-            ownMediaElement.media.play();
-        }, 500);
+        // setTimeout(function() {
+        //     ownMediaElement.media.play();
+        // }, 500);
 
         ownMediaElement.id = ownElement.streamId;
 
@@ -193,15 +210,34 @@ connection.appendMediaElement = function() {
         });
 
         document.getElementById('video-container-opp').appendChild(mainFaceElement);
+        mainFaceElement.setAttribute('onclick', "maximizeVideo('" + mediaElementList[0].userId + "')")
         mainFaceElement.media.setAttribute('autoplay', 'autoplay')
         mainFaceElement.media.setAttribute('playsinline', true)
         mainFaceElement.setAttribute('playsinline', true)
-
-        setTimeout(function() {
-            mainFaceElement.media.play();
-        }, 600);
+        // setTimeout(function() {
+        //     mainFaceElement.media.play();
+        // }, 700);
 
         mainFaceElement.id = mediaElementList[0].streamId;
+
+        // let mainFaceElement = getHTMLMediaElement(mediaElementList[0].element, {
+        //     title: mediaElementList[0].userId,
+        //     buttons: [],
+        //     width: "100%",
+        //     height: "100%",
+        //     showOnMouseEnter: true
+        // });
+
+        // document.getElementById('video-container-opp').appendChild(mainFaceElement);
+        // mainFaceElement.media.setAttribute('autoplay', 'autoplay')
+        // mainFaceElement.media.setAttribute('playsinline', true)
+        // mainFaceElement.setAttribute('playsinline', true)
+
+        // setTimeout(function() {
+        //     mainFaceElement.media.play();
+        // }, 600);
+
+        // mainFaceElement.id = mediaElementList[0].streamId;
 
 
         let topFaceElement = getHTMLMediaElement(mediaElementList[1].element, {
@@ -217,9 +253,9 @@ connection.appendMediaElement = function() {
         topFaceElement.media.setAttribute('autoplay', 'autoplay')
         topFaceElement.media.setAttribute('playsinline', true)
         topFaceElement.setAttribute('playsinline', true)
-        setTimeout(function() {
-            topFaceElement.media.play();
-        }, 700);
+        // setTimeout(function() {
+        //     topFaceElement.media.play();
+        // }, 700);
 
         topFaceElement.id = mediaElementList[1].streamId;
     } else if (mediaElementList.length == 3) {
@@ -241,9 +277,9 @@ connection.appendMediaElement = function() {
         ownMediaElement.media.setAttribute('playsinline', true)
         ownMediaElement.setAttribute('playsinline', true)
 
-        setTimeout(function() {
-            ownMediaElement.media.play();
-        }, 800);
+        // setTimeout(function() {
+        //     ownMediaElement.media.play();
+        // }, 800);
 
         ownMediaElement.id = ownElement.streamId;
 
@@ -260,9 +296,9 @@ connection.appendMediaElement = function() {
         mainFaceElement.media.setAttribute('playsinline', true)
         mainFaceElement.setAttribute('playsinline', true)
 
-        setTimeout(function() {
-            mainFaceElement.media.play();
-        }, 900);
+        // setTimeout(function() {
+        //     mainFaceElement.media.play();
+        // }, 900);
 
         mainFaceElement.id = mediaElementList[0].streamId;
 
@@ -280,9 +316,9 @@ connection.appendMediaElement = function() {
         middleFaceElement.media.setAttribute('playsinline', true)
         middleFaceElement.setAttribute('playsinline', true)
 
-        setTimeout(function() {
-            middleFaceElement.media.play();
-        }, 1000);
+        // setTimeout(function() {
+        //     middleFaceElement.media.play();
+        // }, 1000);
 
         middleFaceElement.id = mediaElementList[1].streamId;
 
@@ -300,13 +336,49 @@ connection.appendMediaElement = function() {
         topFaceElement.media.setAttribute('playsinline', true)
         topFaceElement.setAttribute('playsinline', true)
 
-        setTimeout(function() {
-            topFaceElement.media.play();
-        }, 1100);
+        // setTimeout(function() {
+        //     topFaceElement.media.play();
+        // }, 1100);
 
         topFaceElement.id = mediaElementList[2].streamId;
     }
 
+    connection.getMessageParticipant()
+    return;
+}
+connection.appendMediaElement = function() {
+    if (mediaElementList.length == 1) {
+        connection.panel.innerHTML = connection.panel1;
+        document.getElementById('first-video-container-opp').appendChild(mediaHTMLElementList[0]);
+        document.getElementById('our-face').innerHTML = '';
+        document.getElementById('our-face').style.display = 'none';
+    } else if (mediaElementList.length == 2) {
+        connection.panel.innerHTML = connection.panel1;
+        document.getElementById('our-face').innerHTML = '';
+        document.getElementById('our-face').appendChild(mediaHTMLElementList[0]);
+        document.getElementById('our-face').style.display = 'block';
+        
+        document.getElementById('first-video-container-opp').appendChild(mediaHTMLElementList[1]);
+        // mediaHTMLElementList[1].play()
+    } else if (mediaElementList.length == 3) {
+        document.getElementById('our-face').innerHTML = '';
+        document.getElementById('our-face').style.display = 'none';
+        connection.panel.innerHTML = connection.panel2;
+
+        document.getElementById('second-videos-container').appendChild(mediaHTMLElementList[0]);
+        document.getElementById('second-video-container-opp').appendChild(mediaHTMLElementList[1]);
+        document.getElementById('second-video-container-opps-1').appendChild(mediaHTMLElementList[2]);
+    } else if (mediaElementList.length == 4) {
+        document.getElementById('our-face').innerHTML = '';
+        document.getElementById('our-face').style.display = 'none';
+        connection.panel.innerHTML = connection.panel3;
+
+        document.getElementById('third-videos-container').appendChild(mediaHTMLElementList[0]);
+        document.getElementById('third-video-container-opp').appendChild(mediaHTMLElementList[1]);
+        document.getElementById('third-video-container-opps-1').appendChild(mediaHTMLElementList[2]);
+        document.getElementById('third-video-container-opps-2').appendChild(mediaHTMLElementList[3]);
+    }
+    console.log(connection.panel)
     connection.getMessageParticipant()
     return;
 }
@@ -386,8 +458,10 @@ connection.onstream = function(event, isMe) {
             streamId: event.streamid,
             name: event.name
         }
-        connection.appendMediaElement()
+        connection.pushMediaElement(event.userid, event.mediaElement, event.streamid, event.name)
+        // connection.appendMediaElement()
     } else {
+        console.log(event)
         connection.pushMediaElement(event.userid, event.mediaElement, event.streamid, event.name)
      //   connection.appendMediaElement()
     }
@@ -506,6 +580,58 @@ main.querySelector('#open-room').onclick = function() {
     disableInputButtons();
 };
 
+function openRoomNow(mailEnabled) {
+    if(mailEnabled) {
+        var data = {
+            'roomId' : document.getElementById('room-id').value,
+            'userEmail1': document.getElementById('user-email1').value,
+            'userEmail2': document.getElementById('user-email2').value,
+            'userEmail3': document.getElementById('user-email3').value,
+            'requestUrl': window.location.protocol +'//'+ window.location.host,
+            'hostname': window.location.hostname
+        }
+        var responsedata = ajaxPostJQuery('https://talk.proglint.com:8080/india/sendEmail', data);
+        var parsealldrugsearchdata = $.parseJSON(responsedata); 
+    }
+    
+    let username = document.getElementById('username');
+    if (!username.value || username.value.length == 0) {
+        alert('Please enter your name to start conversation')
+        return
+    }
+    connection.name = username.value;
+    var roomInfo = document.getElementById('room-id');
+    if (!roomInfo.value || !roomInfo.value.length) {
+        roomInfo.focus();
+        return alert('Your MUST Enter Room id!');
+    }
+
+    if (username.value.toUpperCase() == "PHYSICIAN") {
+        $("#soap-hide").show();
+    } else {
+        $("#soap-hide").hide();
+    }
+
+    connection.channel = roomInfo.value;
+    connection.checkPresence(roomInfo.value, function(isRoomExists) {
+        if (isRoomExists) {
+            enableInputButtons();
+            roomInfo.focus();
+            // return alert('Room id already found!');
+            disableInputButtons();
+            connection.join(roomInfo.value);
+            $(".create-room").hide();
+            $(".video-chat").show();
+            //connection.join(roomInfo.value);
+        } else {
+            connection.open(roomInfo.value, function() {
+                showRoomURL(connection.sessionid);
+            });
+        }
+    });
+    disableInputButtons();
+}
+
 //leave the room
 document.getElementById('btn-leave-room').onclick = function() {
     this.disabled = true;
@@ -517,7 +643,8 @@ document.getElementById('btn-leave-room').onclick = function() {
     } else {
         connection.leave();
     }
-    window.location.reload();
+    console.log(window.location.protocol + '://' +window.location.hostname)
+    window.location.href = '/';
 };
 
 function disableInputButtons() {
