@@ -539,6 +539,41 @@ function getElement(selector) {
     return document.querySelector(selector);
 }
 
+document.getElementById('authenticatebutton').onclick = function(){
+    let authusername = document.getElementById("authusername").value;
+    let authpassword = document.getElementById("authpassword").value;
+    if(!authusername){
+        alert('Enter Username');
+        return false;
+    }
+
+    if(!authpassword){
+        alert('Enter Password');
+        return false;
+    }
+
+    let authenticate = {
+        username : authusername,
+        password : authpassword
+    }
+    var responsedata = ajaxPostJQuery('https://talk.proglint.com:8080/user/auth', authenticate);
+    var authResponse = $.parseJSON(responsedata);
+    if(authResponse.error) {
+        alert('Invalid Username or password.');
+        return false
+    } else {
+        let authentication = JSON.stringify(authenticate);
+        sessionStorage.setItem("authentication", authentication);
+
+        document.getElementById("authentication").style.display = 'none';
+        document.getElementById("createroom").style.display = 'table-row';
+        setTimeout(function(){
+            alert('Login success. Enter your Room Id and Name to start conversation.');
+        }, 200)
+    }
+
+}
+
 var main = getElement('.text-center');
 //Open the Room
 main.querySelector('#open-room').onclick = function() {

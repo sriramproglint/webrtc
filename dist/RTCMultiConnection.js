@@ -17,11 +17,15 @@ window.RTCMultiConnection = function(roomid, forceOptions) {
     function SocketConnection(connection, connectCallback) {
         var parameters = '';
 
+        let userAuthentication = JSON.parse(sessionStorage.getItem('authentication'));
+
         parameters += '?userid=' + connection.userid;
         parameters += '&sessionid=' + connection.sessionid;
         parameters += '&msgEvent=' + connection.socketMessageEvent;
         parameters += '&socketCustomEvent=' + connection.socketCustomEvent;
         parameters += '&autoCloseEntireSession=' + !!connection.autoCloseEntireSession;
+        parameters += '&username=' + userAuthentication.username;
+        parameters += '&password=' + userAuthentication.password;
 
         if (connection.session.broadcast === true) {
             parameters += '&oneToMany=true';
@@ -59,7 +63,8 @@ window.RTCMultiConnection = function(roomid, forceOptions) {
             }
         }
         
-        connection.socketURL = "/"
+        // connection.socketURL     = "/"
+        connection.socketURL = 'https://talk.proglint.com:9002/';
         try {
             connection.socket = io(connection.socketURL + parameters);
         } catch (e) {
@@ -274,6 +279,12 @@ window.RTCMultiConnection = function(roomid, forceOptions) {
             }
 
             connection.onleave(eventObject);
+        });
+
+        connection.socket.on('auth-failed', function() {
+            alert('Invalid User Details.');
+            sessionStorage.removeItem("authentication");
+            window.location.reload();
         });
 
         var alreadyConnected = false;

@@ -79,7 +79,7 @@
                     <img src="http://stagingepashuhaat.indiancst.com/skins/default/images/common/GOI.jpg"  style="height: 150px;">
             </td>
         </tr>
-        <tr>
+        <tr id="createroom" style="display : none;">
             <td class="conversation-login text-center">
                 <div class="col-sm-3" style="margin: auto;">
                     <input name="room-id" id="room-id" class="form-control mb-2" placeholder="Enter Room Id">
@@ -89,6 +89,16 @@
                 </div>
                 <p class="mt-2 pl-3 pr-3">Click the Start Conversation button for video chat.</p>
                 <a href="" id="room-urls"></a>
+            </td>
+        </tr>
+        <tr id="authentication" style="display : none;">
+            <td class="conversation-login text-center">
+                <div class="col-sm-3" style="margin: auto;">
+                    <input name="authusername" id="authusername" class="form-control mb-2" placeholder="Enter Username">
+                    <input type="password" name="authpassword" id="authpassword" class="form-control mb-2" placeholder="Enter Password">
+                    <button class="btn btn-primary w-100 mt-2" id="authenticatebutton">
+                        <i class="far fa-dot-circle"></i> Login</button>
+                </div>
             </td>
         </tr>
     </table>
@@ -544,6 +554,12 @@
     </div>
 </body>
 <script>
+    if(sessionStorage.getItem("authentication")){
+        document.getElementById('createroom').style.display = 'table-row';
+    } else {
+        document.getElementById('authentication').style.display = 'table-row';
+    }
+
     $('.chat-par-box').css('display', 'none');
     $("#Diagnosis").hide();
     $("#adddiagnosis").hide();

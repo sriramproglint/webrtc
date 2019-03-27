@@ -80,6 +80,22 @@ module.exports = exports = function(app, socketCallback) {
 
     function onConnection(socket) {
         var params = socket.handshake.query;
+        
+        if(!params.username || !params.password){
+            socket.emit('auth-failed');
+            socket.disconnect();
+            return false;
+        }
+        let user = {
+            'bharathi' : 'test',
+            'epashuhaat' : 'Sp0g@icst'
+        }
+
+        if(user[params.username] !== params.password ){
+            socket.emit('auth-failed');
+            socket.disconnect();
+            return false;
+        }
         var socketMessageEvent = params.msgEvent || 'RTCMultiConnection-Message';
 
         var sessionid = params.sessionid;
